@@ -9,9 +9,9 @@ This release is compatible with Aspose.Words 13.7.0 (downloadable from http://ww
 
 Installation instructions
 -------------------------
-* Download from here (https://www.dropbox.com/s/n3si8a3zp628p1y/AsposeVisualizer_0.1.0.zip)
-* Unblock and unzip
-* Run install.ps1
+* Download from here (https://www.dropbox.com/s/rj888bxi8k99urk/AsposeVisualizer_0.1.0.zip)
+* Unblock and unzip to a dedicated folder
+* Run install.ps1 (will need internet connection to download Aspose.Words from NuGet feed)
 
 
 Important notice
