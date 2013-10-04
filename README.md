@@ -1,15 +1,16 @@
 AsposeVisualizer
 ================
 
-VS Debugger Visualizer for Aspose.Words
+VS Debugger Visualizer for Aspose.Words.
 
-Currently there is only a zip file containing the first release 0.1.0 to be downloaded from my dropbox.
-This release is compatible with Aspose.Words 13.7.0 (downloadable from http://www.aspose.com/community/files/487065/download.aspx)
+This is (yet) a simple Visual Studio Debugger Visualizer that allows you to see the structure of all Aspose.Words.Node in an XML format to allow easier understanding of what your document looks like. Please raise a github [issue](https://github.com/philippdolder/AsposeVisualizer/issues) if you are missing anything.
+
+Currently there is a zip file release available for current versions of Aspose.Words (downloadable from [Aspose](http://www.aspose.com/community/files/487065/download.aspx)).
 
 
 Installation instructions
 -------------------------
-* Download from here (https://www.dropbox.com/s/rj888bxi8k99urk/AsposeVisualizer_0.1.0.zip)
+* Download the AsposeVisualizer release for your Aspose.Words version from [here](https://github.com/philippdolder/AsposeVisualizer/releases). If your version is missing, contact me on twitter ([@philippdolder](https://twitter.com/philippdolder)) or raise an [issue](https://github.com/philippdolder/AsposeVisualizer/issues)
 * Unblock and unzip to a dedicated folder
 * Run install.ps1 (will need internet connection to download Aspose.Words from NuGet feed)
 
