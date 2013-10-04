@@ -1,0 +1,1 @@
+When creating a new release we currently also need to update the install.ps1 script with the new aspose version we are downloading!!
