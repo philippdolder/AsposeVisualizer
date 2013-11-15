@@ -15,6 +15,14 @@ Installation instructions
 * Run install.ps1 (will need internet connection to download Aspose.Words from NuGet feed)
 
 
+Known issues
+------------
+* Sometimes you get a "Unhandled exception has occurred [...]. Object is in a zombie state"
+  * This happens before the AsposeVisualizer comes into play, so unfortunately I have no chance to avoid this
+  * It seems to being caused by slow serialization
+  * Just click "Continue" and try again, it usually works perfect after the first zombie exception
+
+
 Important notice
 ----------------
 There is in no way a link between this project and Aspose Ltd., the company behind Aspose.Words. You are responsible yourself to have the appropriate license for Aspose.Words to use this product.
