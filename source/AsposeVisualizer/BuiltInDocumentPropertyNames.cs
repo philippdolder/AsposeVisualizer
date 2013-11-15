@@ -20,6 +20,7 @@ namespace AsposeVisualizer
 {
     public static class BuiltInDocumentPropertyNames
     {
+        // ReSharper disable UnusedMember.Global used by reflection
         public const string Title = "Title";
         public const string Subject = "Subject";
         public const string Author = "Author";
@@ -33,5 +34,6 @@ namespace AsposeVisualizer
         public const string Language = "Language";
         public const string DocumentVersion = "Document Version";
         public const string HyperlinkBase = "Hyperlink Base";
+        // ReSharper restore UnusedMember.Global
     }
 }

@@ -22,6 +22,7 @@ namespace AsposeVisualizer
     using System.Linq;
     using System.Reflection;
     using System.Text;
+    using System.Xml.Linq;
     using Aspose.Words;
     using Aspose.Words.Fields;
 
@@ -45,7 +46,7 @@ namespace AsposeVisualizer
 
         public string AsXml
         {
-            get { return this.structureBuilder.ToString(); }
+            get { return this.FormatXml(this.structureBuilder.ToString()); }
         }
 
         public override VisitorAction VisitShapeStart(Aspose.Words.Drawing.Shape shape)
@@ -121,7 +122,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitSectionStart(Section section)
         {
-            this.IndentBy(1);
             this.structureBuilder
                 .AppendFormat("<Section PaperSize='{0}'>", section.PageSetup.PaperSize)
                 .AppendLine();
@@ -131,7 +131,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitSectionEnd(Section section)
         {
-            this.IndentBy(1);
             this.structureBuilder.AppendLine("</Section>");
 
             return VisitorAction.Continue;
@@ -139,7 +138,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitBodyStart(Body body)
         {
-            this.IndentBy(2);
             this.structureBuilder.AppendLine("<Body>");
 
             return VisitorAction.Continue;
@@ -147,7 +145,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitBodyEnd(Body body)
         {
-            this.IndentBy(2);
             this.structureBuilder.AppendLine("</Body>");
 
             return VisitorAction.Continue;
@@ -155,7 +152,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitParagraphStart(Paragraph paragraph)
         {
-            this.IndentBy(3);
             this.structureBuilder
                 .AppendFormat("<Paragraph StyleIdentifier='{0}' StyleName='{1}'>", paragraph.ParagraphFormat.StyleIdentifier, paragraph.ParagraphFormat.StyleName)
                 .AppendLine();
@@ -165,7 +161,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitParagraphEnd(Paragraph paragraph)
         {
-            this.IndentBy(3);
             this.structureBuilder.AppendLine("</Paragraph>");
 
             return VisitorAction.Continue;
@@ -173,7 +168,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
         {
-            this.IndentBy(4);
             this.structureBuilder
                 .AppendFormat("<BookmarkStart Name='{0}' />", bookmarkStart.Name)
                 .AppendLine();
@@ -183,7 +177,6 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
         {
-            this.IndentBy(4);
             this.structureBuilder
                 .AppendFormat("<BookmarkEnd Name='{0}' />", bookmarkEnd.Name)
                 .AppendLine();
@@ -200,13 +193,11 @@ namespace AsposeVisualizer
             }
             else if (run.Text.Contains(ControlChar.PageBreak))
             {
-                this.IndentBy(4);
                 this.structureBuilder
                     .AppendLine("<PageBreak />");
             }
             else
             {
-                this.IndentBy(4);
                 this.structureBuilder
                     .AppendFormat("<Run>{0}</Run>", run.Text)
                     .AppendLine();
@@ -387,28 +378,14 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
         {
-            if (headerFooter.IsHeader)
-            {
-                this.structureBuilder.AppendLine("<Header>");
-            }
-            else
-            {
-                this.structureBuilder.AppendLine("<Footer>");
-            }
+            this.structureBuilder.AppendLine(headerFooter.IsHeader ? "<Header>" : "<Footer>");
 
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
         {
-            if (headerFooter.IsHeader)
-            {
-                this.structureBuilder.AppendLine("</Header>");
-            }
-            else
-            {
-                this.structureBuilder.AppendLine("</Footer>");
-            }
+            this.structureBuilder.AppendLine(headerFooter.IsHeader ? "</Header>" : "</Footer>");
 
             return VisitorAction.Continue;
         }
@@ -464,12 +441,7 @@ namespace AsposeVisualizer
 
         private static string GetXmlTagForDocumentProperty(string documentProperty)
         {
-            if (IsBuiltInDocumentProperty(documentProperty))
-            {
-                return "BuiltInDocumentProperty";
-            }
-
-            return "CustomDocumentProperty";
+            return IsBuiltInDocumentProperty(documentProperty) ? "BuiltInDocumentProperty" : "CustomDocumentProperty";
         }
 
         private static string GetDocumentPropertyFromField(FieldStart fieldStart)
@@ -497,19 +469,16 @@ namespace AsposeVisualizer
             return builtInDocumentPropertyNames.Contains(documentPropertyName);
         }
 
+        private string FormatXml(string xml)
+        {
+            return XElement.Parse(xml).ToString(SaveOptions.None);
+        }
+
         private static List<string> GetConstantsOf(Type type)
         {
             var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Static);
 
             return fieldInfos.Select(fieldInfo => fieldInfo.Name).ToList();
-        }
-
-        private void IndentBy(int indentation)
-        {
-            for (int i = 0; i < indentation; i++)
-            {
-                this.structureBuilder.Append("  ");
-            }
         }
     }
 }
