@@ -18,9 +18,9 @@ Installation instructions
 Known issues
 ------------
 * Sometimes you get a "Unhandled exception has occurred [...]. Object is in a zombie state"
-** This happens before the AsposeVisualizer comes into play, so unfortunately I have no chance to avoid this
-** It seems to being caused by slow serialization
-** Just click "Continue" and try again, it usually works perfect after the first zombie exception
+  * This happens before the AsposeVisualizer comes into play, so unfortunately I have no chance to avoid this
+  * It seems to being caused by slow serialization
+  * Just click "Continue" and try again, it usually works perfect after the first zombie exception
 
 
 Important notice
