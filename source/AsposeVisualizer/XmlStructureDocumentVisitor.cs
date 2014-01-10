@@ -287,7 +287,7 @@ namespace AsposeVisualizer
             }
             else
             {
-                this.structureBuilder.AppendLine("<Field>");
+                this.structureBuilder.AppendLine("<FieldStart />");
             }
 
             return VisitorAction.Continue;
@@ -307,7 +307,7 @@ namespace AsposeVisualizer
             }
             else
             {
-                this.structureBuilder.AppendLine("</Field>");
+                this.structureBuilder.AppendLine("<FieldEnd />");
             }
 
             return VisitorAction.Continue;
