@@ -22,6 +22,7 @@ namespace AsposeVisualizer
     using System.Linq;
     using System.Reflection;
     using System.Text;
+    using System.Xml;
     using System.Xml.Linq;
     using Aspose.Words;
     using Aspose.Words.Fields;
@@ -46,7 +47,7 @@ namespace AsposeVisualizer
 
         public string AsXml
         {
-            get { return this.FormatXml(this.structureBuilder.ToString()); }
+            get { return FormatXml(this.structureBuilder.ToString()); }
         }
 
         public override VisitorAction VisitShapeStart(Aspose.Words.Drawing.Shape shape)
@@ -469,16 +470,32 @@ namespace AsposeVisualizer
             return builtInDocumentPropertyNames.Contains(documentPropertyName);
         }
 
-        private string FormatXml(string xml)
-        {
-            return XElement.Parse(xml).ToString(SaveOptions.None);
-        }
-
         private static List<string> GetConstantsOf(Type type)
         {
             var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Static);
 
             return fieldInfos.Select(fieldInfo => fieldInfo.Name).ToList();
+        }
+
+        private static string FormatXml(string xml)
+        {
+            try
+            {
+                return XElement.Parse(xml).ToString(SaveOptions.None);
+            }
+            catch (XmlException)
+            {
+                string message = new StringBuilder()
+                    .AppendLine("Could not interpret the document as xml.")
+                    .AppendLine("Please raise an issue at https://github.com/philippdolder/AsposeVisualizer to help improve the aspose debugger visualizer.")
+                    .AppendLine()
+                    .AppendLine("Here is the document as string representation:")
+                    .AppendLine()
+                    .Append(xml)
+                    .ToString();
+
+                return message;
+            }
         }
     }
 }
