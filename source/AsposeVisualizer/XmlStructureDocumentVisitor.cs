@@ -31,6 +31,17 @@ namespace AsposeVisualizer
     {
         private const string DocumentVariablePrefix = "docvariable";
         private const string DocumentPropertyPrefix = "docproperty";
+
+        private static readonly Dictionary<HeaderFooterType, string> HeaderFooterTypes = new Dictionary<HeaderFooterType, string>
+        {
+            { HeaderFooterType.HeaderPrimary, "Primary" },
+            { HeaderFooterType.HeaderFirst, "First" },
+            { HeaderFooterType.HeaderEven, "Even" },
+            { HeaderFooterType.FooterPrimary, "Primary" },
+            { HeaderFooterType.FooterFirst, "First" },
+            { HeaderFooterType.FooterEven, "Even" },
+        };
+
         private readonly StringBuilder structureBuilder;
         private bool skipRun;
         private bool skipFieldSeparator;
@@ -298,12 +309,12 @@ namespace AsposeVisualizer
         {
             if (!string.IsNullOrEmpty(this.currentDocumentProperty))
             {
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentProperty, "\"/>"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentProperty, "\" />"));
                 this.currentDocumentProperty = null;
             }
             else if (!string.IsNullOrEmpty(this.currentDocumentVariable))
             {
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentVariable, "\"/>"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentVariable, "\" />"));
                 this.currentDocumentVariable = null;
             }
             else
@@ -379,14 +390,21 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitHeaderFooterStart(HeaderFooter headerFooter)
         {
-            this.structureBuilder.AppendLine(headerFooter.IsHeader ? "<Header>" : "<Footer>");
+            this.structureBuilder.AppendLine(string.Concat(
+                "<", 
+                GetXmlTagForHeaderFooter(headerFooter), 
+                " Type=\"", 
+                HeaderFooterTypes[headerFooter.HeaderFooterType], 
+                "\" LinkedToPrevious=\"",
+                headerFooter.IsLinkedToPrevious,
+                "\" >"));
 
             return VisitorAction.Continue;
         }
 
         public override VisitorAction VisitHeaderFooterEnd(HeaderFooter headerFooter)
         {
-            this.structureBuilder.AppendLine(headerFooter.IsHeader ? "</Header>" : "</Footer>");
+            this.structureBuilder.AppendLine(string.Concat("</", GetXmlTagForHeaderFooter(headerFooter), ">"));
 
             return VisitorAction.Continue;
         }
@@ -443,6 +461,11 @@ namespace AsposeVisualizer
         private static string GetXmlTagForDocumentProperty(string documentProperty)
         {
             return IsBuiltInDocumentProperty(documentProperty) ? "BuiltInDocumentProperty" : "CustomDocumentProperty";
+        }
+
+        private static string GetXmlTagForHeaderFooter(HeaderFooter headerFooter)
+        {
+            return headerFooter.IsHeader ? "Header" : "Footer";
         }
 
         private static string GetDocumentPropertyFromField(FieldStart fieldStart)
