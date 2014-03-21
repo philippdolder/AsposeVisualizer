@@ -6,8 +6,8 @@ if (($visualStudio2012Folder -eq $null) -and ($visualStudio2013Folder -eq $null)
 	Write-Error "Could not install Aspose Debugger Visualizer. None of the supported Visual Studio Version (2012, 2013) were found" -ErrorAction Stop
 }
 
-Write-Output "Downloading Aspose.Words 14.1.0 from NuGet"
-.\NuGet.exe install Aspose.Words -Version 14.1.0 -ExcludeVersion -NoCache -NonInteractive -OutputDirectory .
+Write-Output "Downloading Aspose.Words 14.2.0 from NuGet"
+.\NuGet.exe install Aspose.Words -Version 14.2.0 -ExcludeVersion -NoCache -NonInteractive -OutputDirectory .
 
 if ($visualStudio2012Folder -ne $null) {
     Write-Output "Installing Aspose Debugger Visualizer for Visual Studio 2012."
