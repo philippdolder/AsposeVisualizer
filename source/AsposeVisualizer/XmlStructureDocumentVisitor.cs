@@ -22,6 +22,7 @@ namespace AsposeVisualizer
     using System.Linq;
     using System.Reflection;
     using System.Text;
+    using System.Web;
     using System.Xml;
     using System.Xml.Linq;
     using Aspose.Words;
@@ -287,14 +288,14 @@ namespace AsposeVisualizer
             {
                 this.currentDocumentProperty = GetDocumentPropertyFromField(fieldStart);
                 this.currentFieldTagName = GetXmlTagForDocumentProperty(this.currentDocumentProperty);
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "Start Name=\"", this.currentDocumentProperty, "\" />"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "Start Name=\"", HttpUtility.HtmlEncode(this.currentDocumentProperty), "\" />"));
                 this.skipRun = true;
             }
             else if (fieldStart.FieldType == FieldType.FieldDocVariable)
             {
                 this.currentDocumentVariable = GetDocumentVariableFromField(fieldStart);
                 this.currentFieldTagName = "DocumentVariable";
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "Start Name=\"", this.currentDocumentVariable, "\" />"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "Start Name=\"", HttpUtility.HtmlEncode(this.currentDocumentVariable), "\" />"));
                 this.skipRun = true;
             }
             else
@@ -309,12 +310,12 @@ namespace AsposeVisualizer
         {
             if (!string.IsNullOrEmpty(this.currentDocumentProperty))
             {
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentProperty, "\" />"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", HttpUtility.HtmlEncode(this.currentDocumentProperty), "\" />"));
                 this.currentDocumentProperty = null;
             }
             else if (!string.IsNullOrEmpty(this.currentDocumentVariable))
             {
-                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", this.currentDocumentVariable, "\" />"));
+                this.structureBuilder.AppendLine(string.Concat("<", this.currentFieldTagName, "End Name=\"", HttpUtility.HtmlEncode(this.currentDocumentVariable), "\" />"));
                 this.currentDocumentVariable = null;
             }
             else
