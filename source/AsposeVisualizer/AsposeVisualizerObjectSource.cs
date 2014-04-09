@@ -35,6 +35,15 @@ namespace AsposeVisualizer
 
                 writer.Write(visitor.AsXml);
             }
+            catch (InvalidCastException e)
+            {
+                string message = string.Concat(
+                    "It seems the version of Aspose.Words you are debugging and the installed Aspose.Words Debugger Visualizer don't match.",
+                    "\r\nPlease ensure both versions match.\r\n\r\n",
+                    e.Message);
+
+                writer.Write(message);
+            }
             catch (Exception e)
             {
                 writer.Write(e.Message);
