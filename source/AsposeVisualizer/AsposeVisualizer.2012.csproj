@@ -36,6 +36,9 @@
     <Reference Include="Aspose.Words">
       <HintPath>..\packages\Aspose.Words.14.4.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
     </Reference>
+    <Reference Include="AsposeWordsSupport">
+      <HintPath>..\packages\AsposeWordsSupport.1.0.7\lib\net45\AsposeWordsSupport.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\DebuggerVisualizers\V11.0\Microsoft.VisualStudio.DebuggerVisualizers.dll</HintPath>
@@ -59,10 +62,8 @@
       <DependentUpon>AsposeVisualizerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AsposeVisualizerObjectSource.cs" />
-    <Compile Include="BuiltInDocumentPropertyNames.cs" />
     <Compile Include="AsposeDialogDebuggerVisualizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlStructureDocumentVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AsposeVisualizerForm.resx">

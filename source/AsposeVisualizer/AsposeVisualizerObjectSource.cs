@@ -19,7 +19,9 @@ namespace AsposeVisualizer
 {
     using System;
     using System.IO;
+    using System.Text;
     using Aspose.Words;
+    using AsposeWordsSupport;
     using Microsoft.VisualStudio.DebuggerVisualizers;
 
     public class AsposeVisualizerObjectSource : VisualizerObjectSource
@@ -44,9 +46,18 @@ namespace AsposeVisualizer
 
                 writer.Write(message);
             }
-            catch (Exception e)
+            catch (CouldNotFormatAsXmlException e)
             {
-                writer.Write(e.Message);
+                string message = new StringBuilder()
+                    .AppendLine("Could not interpret the document as xml.")
+                    .AppendLine("Please raise an issue at https://github.com/philippdolder/AsposeVisualizer to help improve the aspose debugger visualizer.")
+                    .AppendLine()
+                    .AppendLine("Here is the document as string representation:")
+                    .AppendLine()
+                    .Append(e.Xml)
+                    .ToString();
+
+                writer.Write(message);
             }
 
             writer.Flush();
