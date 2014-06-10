@@ -1,15 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{149DC018-B3CF-4FD9-A6FC-8E7F6FE66F10}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeVisualizer.2012", "AsposeVisualizer\AsposeVisualizer.2012.csproj", "{E4748169-C408-46A5-87FC-352247F5E10B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8839729A-7CBF-4B6E-A092-064D56AF585B} = {8839729A-7CBF-4B6E-A092-064D56AF585B}
