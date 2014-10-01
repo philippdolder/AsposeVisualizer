@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="VisualizerViewModel.cs" company="Philipp Dolder">
+// <copyright file="RelayCommand.cs" company="Philipp Dolder">
 //   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,40 +17,37 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.ComponentModel;
-    using System.Windows;
+    using System;
     using System.Windows.Input;
 
-    public class VisualizerViewModel : INotifyPropertyChanged
+    public class RelayCommand : ICommand
     {
-        private readonly INodeProxy documentProxy;
+        private readonly Action action;
 
-        public VisualizerViewModel(INodeProxy documentProxy)
+        public RelayCommand(Action action)
         {
-            this.documentProxy = documentProxy;
-            this.CopyCommand = new RelayCommand(this.CopyToClipboard);
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            this.action = action;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        public ICommand CopyCommand { get; private set; }
-
-        public string Xml
+        public event EventHandler CanExecuteChanged
         {
-            get { return this.CreateXml(); }
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
-        private void CopyToClipboard()
+        public bool CanExecute(object parameter)
         {
-            Clipboard.SetText(this.Xml);
+            return true;
         }
 
-        private string CreateXml()
+        public void Execute(object parameter)
         {
-            var visitor = new XmlStructureNodeVisitor();
-            this.documentProxy.Accept(visitor);
-
-            return visitor.AsXml;
+            this.action();
         }
     }
 }
