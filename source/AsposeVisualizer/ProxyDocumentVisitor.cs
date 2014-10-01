@@ -68,7 +68,10 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitSectionStart(Section section)
         {
-            SectionProxy sectionProxy = this.proxyFactory.CreateSection(section.PageSetup.Orientation.ToString(), section.PageSetup.PaperSize.ToString());
+            SectionProxy sectionProxy = this.proxyFactory.CreateSection();
+
+            sectionProxy.Format.Orientation = section.PageSetup.Orientation.ToString();
+            sectionProxy.Format.PaperSize = section.PageSetup.PaperSize.ToString();
 
             this.AddToHierarchy(sectionProxy);
 
@@ -140,6 +143,9 @@ namespace AsposeVisualizer
         {
             ParagraphProxy paragraphProxy = this.proxyFactory.CreateParagraph();
 
+            paragraphProxy.Format.StyleIdentifier = paragraph.ParagraphFormat.StyleIdentifier.ToString();
+            paragraphProxy.Format.StyleName = paragraph.ParagraphFormat.StyleName;
+
             this.AddToHierarchy(paragraphProxy);
 
             return VisitorAction.Continue;
@@ -157,6 +163,12 @@ namespace AsposeVisualizer
         public override VisitorAction VisitRun(Run run)
         {
             RunProxy runProxy = this.proxyFactory.CreateRun(run.Text);
+
+            runProxy.Format.Font = run.Font.Name;
+            runProxy.Format.StyleIdentifier = run.Font.StyleIdentifier.ToString();
+            runProxy.Format.StyleName = run.Font.StyleName;
+            runProxy.Format.Size = run.Font.Size;
+            runProxy.Format.Language = run.Font.LocaleId;
 
             this.AddLeafToHierarchy(runProxy);
 

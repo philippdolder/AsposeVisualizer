@@ -26,15 +26,10 @@ namespace AsposeVisualizer
         private readonly List<HeaderProxy> headers = new List<HeaderProxy>();
         private readonly List<FooterProxy> footers = new List<FooterProxy>();
 
-        public SectionProxy(string orientation, string paperSize)
+        public SectionProxy()
         {
-            this.Orientation = orientation;
-            this.PaperSize = paperSize;
+            this.Format = new SectionFormatProxy();
         }
-
-        public string Orientation { get; private set; }
-
-        public string PaperSize { get; private set; }
 
         public BodyProxy Body { get; private set; }
 
@@ -47,6 +42,8 @@ namespace AsposeVisualizer
         {
             get { return this.footers; }
         }
+
+        public SectionFormatProxy Format { get; private set; }
 
         public void Add(INodeProxy node)
         {

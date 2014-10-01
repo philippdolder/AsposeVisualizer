@@ -25,10 +25,17 @@ namespace AsposeVisualizer
     {
         private readonly List<INodeProxy> children = new List<INodeProxy>();
 
+        public ParagraphProxy()
+        {
+            this.Format = new ParagraphFormatProxy();
+        }
+
         public IReadOnlyList<INodeProxy> Children
         {
             get { return this.children; }
         }
+
+        public ParagraphFormatProxy Format { get; private set; }
 
         public void Add(INodeProxy node)
         {

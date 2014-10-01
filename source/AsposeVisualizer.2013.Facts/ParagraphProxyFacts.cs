@@ -84,6 +84,12 @@ namespace AsposeVisualizer
         }
 
         [Fact]
+        public void HasFormatting()
+        {
+            this.testee.Format.Should().NotBeNull();
+        }
+
+        [Fact]
         public void VisitsChildrenBetweenParagraphStartAndEnd()
         {
             var child = A.Fake<INodeProxy>();

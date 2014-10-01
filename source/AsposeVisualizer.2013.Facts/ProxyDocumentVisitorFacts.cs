@@ -58,8 +58,7 @@ namespace AsposeVisualizer
             var secondSectionProxy = A.Fake<SectionProxy>();
 
             A.CallTo(() => this.proxyFactory.CreateDocument()).Returns(documentProxy);
-            A.CallTo(() => this.proxyFactory.CreateSection("Portrait", "Letter")).Returns(firstSectionProxy);
-            A.CallTo(() => this.proxyFactory.CreateSection("Landscape", "Letter")).Returns(secondSectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).ReturnsNextFromSequence(firstSectionProxy, secondSectionProxy);
 
             document.Accept(this.testee);
 
@@ -73,12 +72,12 @@ namespace AsposeVisualizer
         {
             Document document = CreateDocumentWithTwoSections();
 
-            var firstSectionProxy = new SectionProxy("Orientation", "PaperSize");
-            var secondSectionProxy = new SectionProxy("Orientation", "PaperSize");
+            var firstSectionProxy = new SectionProxy();
+            var secondSectionProxy = new SectionProxy();
             var firstBodyProxy = A.Fake<BodyProxy>();
             var secondBodyProxy = A.Fake<BodyProxy>();
 
-            A.CallTo(() => this.proxyFactory.CreateSection(A<string>._, A<string>._)).ReturnsNextFromSequence(firstSectionProxy, secondSectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).ReturnsNextFromSequence(firstSectionProxy, secondSectionProxy);
             A.CallTo(() => this.proxyFactory.CreateBody()).ReturnsNextFromSequence(firstBodyProxy, secondBodyProxy);
 
             document.Accept(this.testee);
@@ -93,7 +92,7 @@ namespace AsposeVisualizer
             Section section = new Document().FirstSection;
             var sectionProxy = A.Fake<SectionProxy>();
 
-            A.CallTo(() => this.proxyFactory.CreateSection(A<string>._, A<string>._)).Returns(sectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).Returns(sectionProxy);
 
             section.Accept(this.testee);
 
@@ -104,10 +103,10 @@ namespace AsposeVisualizer
         public void AddsBodyToSection_WhenStartVisitingFromSection()
         {
             Section section = new Document().FirstSection;
-            var sectionProxy = new SectionProxy("Orientation", "PaperSize");
+            var sectionProxy = new SectionProxy();
             var bodyProxy = A.Fake<BodyProxy>();
 
-            A.CallTo(() => this.proxyFactory.CreateSection(A<string>._, A<string>._)).Returns(sectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).Returns(sectionProxy);
             A.CallTo(() => this.proxyFactory.CreateBody()).Returns(bodyProxy);
 
             section.Accept(this.testee);
@@ -124,11 +123,11 @@ namespace AsposeVisualizer
 
             Section section = builder.Document.FirstSection;
 
-            var sectionProxy = new SectionProxy("Orientation", "PaperSize");
+            var sectionProxy = new SectionProxy();
             var firstHeaderProxy = A.Fake<HeaderProxy>();
             var secondHeaderProxy = A.Fake<HeaderProxy>();
 
-            A.CallTo(() => this.proxyFactory.CreateSection(A<string>._, A<string>._)).Returns(sectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).Returns(sectionProxy);
             A.CallTo(() => this.proxyFactory.CreateHeader("Primary")).Returns(firstHeaderProxy);
             A.CallTo(() => this.proxyFactory.CreateHeader("Even")).Returns(secondHeaderProxy);
 
@@ -147,11 +146,11 @@ namespace AsposeVisualizer
 
             Section section = builder.Document.FirstSection;
 
-            var sectionProxy = new SectionProxy("Orientation", "PaperSize");
+            var sectionProxy = new SectionProxy();
             var firstFooterProxy = A.Fake<FooterProxy>();
             var secondFooterProxy = A.Fake<FooterProxy>();
 
-            A.CallTo(() => this.proxyFactory.CreateSection(A<string>._, A<string>._)).Returns(sectionProxy);
+            A.CallTo(() => this.proxyFactory.CreateSection()).Returns(sectionProxy);
             A.CallTo(() => this.proxyFactory.CreateFooter("Primary")).Returns(firstFooterProxy);
             A.CallTo(() => this.proxyFactory.CreateFooter("Even")).Returns(secondFooterProxy);
 
@@ -651,6 +650,37 @@ namespace AsposeVisualizer
             run.Accept(this.testee);
 
             this.testee.Root.Should().Be(runProxy);
+        }
+
+        [Fact]
+        public void Sanity()
+        {
+            var builder = new DocumentBuilder();
+            builder.StartTable();
+            var cell = builder.InsertCell();
+            builder.InsertCell();
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndRow();
+            builder.EndTable();
+
+            builder.MoveTo(cell.FirstParagraph);
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndRow();
+            builder.EndTable();
+
+            Document document = builder.Document;
+
+            var proxyDocumentVisitor = new ProxyDocumentVisitor(new ProxyFactory());
+            document.Accept(proxyDocumentVisitor);
+
+            var doc = proxyDocumentVisitor.Root;
         }
 
         private static Document CreateDocumentWithTwoSections()

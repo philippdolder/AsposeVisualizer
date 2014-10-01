@@ -24,6 +24,7 @@ namespace AsposeVisualizer
     public class VisualizerViewModel : INotifyPropertyChanged
     {
         private readonly INodeProxy documentProxy;
+        private bool includeFormatting;
 
         public VisualizerViewModel(INodeProxy documentProxy)
         {
@@ -37,7 +38,25 @@ namespace AsposeVisualizer
 
         public string Xml
         {
-            get { return this.CreateXml(); }
+            get
+            {
+                return this.CreateXml();
+            }
+        }
+
+        public bool IncludeFormatting
+        {
+            get
+            {
+                return this.includeFormatting;
+            }
+
+            set
+            {
+                this.includeFormatting = value;
+                this.PropertyChanged(this, new PropertyChangedEventArgs("IncludeFormatting"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("Xml"));
+            }
         }
 
         private void CopyToClipboard()
@@ -47,7 +66,7 @@ namespace AsposeVisualizer
 
         private string CreateXml()
         {
-            var visitor = new XmlStructureNodeVisitor();
+            var visitor = new XmlStructureNodeVisitor(new XmlStructureDisplayOptions(this.IncludeFormatting));
             this.documentProxy.Accept(visitor);
 
             return visitor.AsXml;

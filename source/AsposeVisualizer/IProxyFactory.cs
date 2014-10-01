@@ -21,7 +21,7 @@ namespace AsposeVisualizer
     {
         DocumentProxy CreateDocument();
 
-        SectionProxy CreateSection(string orientation, string paperSize);
+        SectionProxy CreateSection();
 
         BodyProxy CreateBody();
 

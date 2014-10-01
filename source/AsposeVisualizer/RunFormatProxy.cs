@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RunProxy.cs" company="Philipp Dolder">
+// <copyright file="RunFormatProxy.cs" company="Philipp Dolder">
 //   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,21 +20,16 @@ namespace AsposeVisualizer
     using System;
 
     [Serializable]
-    public class RunProxy : INodeProxy
+    public class RunFormatProxy
     {
-        public RunProxy(string text)
-        {
-            this.Text = text;
-            this.Format = new RunFormatProxy();
-        }
+        public string Font { get; set; }
 
-        public string Text { get; private set; }
+        public int Language { get; set; }
 
-        public RunFormatProxy Format { get; private set; }
+        public string StyleIdentifier { get; set; }
 
-        public virtual void Accept(NodeVisitor visitor)
-        {
-            visitor.VisitRun(this);
-        }
+        public string StyleName { get; set; }
+
+        public double Size { get; set; }
     }
 }

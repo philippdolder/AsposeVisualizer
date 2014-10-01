@@ -24,25 +24,17 @@ namespace AsposeVisualizer
 
     public class SectionProxyFacts
     {
-        private const string Orientation = "orientation";
-        private const string PaperSize = "paperSize";
         private readonly SectionProxy testee;
 
         public SectionProxyFacts()
         {
-            this.testee = new SectionProxy(Orientation, PaperSize);
+            this.testee = new SectionProxy();
         }
 
         [Fact]
-        public void HasOrientation()
+        public void HasFormat()
         {
-            this.testee.Orientation.Should().Be(Orientation);
-        }
-
-        [Fact]
-        public void HasPaperSize()
-        {
-            this.testee.PaperSize.Should().Be(PaperSize);
+            this.testee.Format.Should().NotBeNull();
         }
 
         [Fact]

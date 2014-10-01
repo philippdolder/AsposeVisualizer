@@ -17,13 +17,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Xml.Linq;
 
     public class XmlStructureNodeVisitor : NodeVisitor
     {
+        private readonly XmlStructureDisplayOptions displayOptions;
         private readonly StringBuilder builder = new StringBuilder();
+
+        public XmlStructureNodeVisitor(XmlStructureDisplayOptions displayOptions)
+        {
+            this.displayOptions = displayOptions;
+        }
 
         public string AsXml
         {
@@ -45,11 +52,20 @@ namespace AsposeVisualizer
 
         public override void VisitSectionStart(SectionProxy section)
         {
-            this.builder
-                .AppendFormat(
-                    "<Section {0}>", 
-                    FormatAttributes(new NamedValue("Orientation", section.Orientation), new NamedValue("PaperSize", section.PaperSize)))
-                .AppendLine();
+            if (this.displayOptions.IncludeFormatting)
+            {
+                this.builder
+                    .AppendFormat(
+                        "<Section {0}>",
+                        FormatAttributes(
+                            new NamedValue("Orientation", section.Format.Orientation),
+                            new NamedValue("PaperSize", section.Format.PaperSize)))
+                    .AppendLine();
+            }
+            else
+            {
+                this.builder.AppendLine("<Section>");
+            }
         }
 
         public override void VisitSectionEnd(SectionProxy section)
@@ -97,7 +113,20 @@ namespace AsposeVisualizer
 
         public override void VisitParagraphStart(ParagraphProxy paragraph)
         {
-            this.builder.AppendLine("<Paragraph>");
+            if (this.displayOptions.IncludeFormatting)
+            {
+                this.builder
+                    .AppendFormat(
+                        "<Paragraph {0}>",
+                        FormatAttributes(
+                            new NamedValue("StyleIdentifier", paragraph.Format.StyleIdentifier),
+                            new NamedValue("StyleName", paragraph.Format.StyleName)))
+                    .AppendLine();
+            }
+            else
+            {
+                this.builder.AppendLine("<Paragraph>");
+            }
         }
 
         public override void VisitParagraphEnd(ParagraphProxy paragraph)
@@ -107,8 +136,25 @@ namespace AsposeVisualizer
 
         public override void VisitRun(RunProxy run)
         {
-            this.builder.AppendFormat("<Run>{0}</Run>", run.Text)
-                .AppendLine();
+            if (this.displayOptions.IncludeFormatting)
+            {
+                this.builder
+                    .AppendFormat(
+                        "<Run {0}>{1}</Run>",
+                        FormatAttributes(
+                            new NamedValue("Language", CultureInfo.GetCultureInfo(run.Format.Language).Name),
+                            new NamedValue("StyleIdentifier", run.Format.StyleIdentifier),
+                            new NamedValue("StyleName", run.Format.StyleName),
+                            new NamedValue("Font", run.Format.Font), 
+                            new NamedValue("Size", run.Format.Size.ToString(CultureInfo.InvariantCulture))),
+                        run.Text.Escape())
+                    .AppendLine();
+            }
+            else
+            {
+                this.builder.AppendFormat("<Run>{0}</Run>", run.Text.Escape())
+                    .AppendLine();
+            }
         }
 
         public override void VisitBookmarkStart(BookmarkStartProxy bookmarkStart)

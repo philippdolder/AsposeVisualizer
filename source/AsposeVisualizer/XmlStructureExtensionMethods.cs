@@ -17,9 +17,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
+    using System;
+    using Aspose.Words;
+
     public static class XmlStructureExtensionMethods
     {
         private const string Quote = "\"";
+
+        public static string Escape(this string subject)
+        {
+            return subject.Replace(ControlChar.LineBreak, Environment.NewLine);
+        }
 
         public static string EncapsulateWithQuotes(this string subject)
         {
