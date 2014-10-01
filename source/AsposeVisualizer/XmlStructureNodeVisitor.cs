@@ -247,7 +247,6 @@ namespace AsposeVisualizer
 
         public override void VisitDrawingMl(DrawingMlProxy drawingMl)
         {
-
             if (this.displayOptions.IncludeImages)
             {
                 this.builder.AppendFormat("<DrawingMl {0}>", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
