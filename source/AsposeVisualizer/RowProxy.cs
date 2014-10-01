@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerObjectSource.cs" company="Philipp Dolder">
-//   Copyright (c) 2013-2014
+// <copyright file="RowProxy.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,19 +17,34 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.IO;
-    using Aspose.Words;
-    using Microsoft.VisualStudio.DebuggerVisualizers;
+    using System;
+    using System.Collections.Generic;
 
-    public class AsposeVisualizerObjectSource : VisualizerObjectSource
+    [Serializable]
+    public class RowProxy : ICompositeNodeProxy
     {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            var root = (Node)target;
-            var visitor = new ProxyDocumentVisitor(new ProxyFactory());
-            root.Accept(visitor);
+        private readonly List<CellProxy> cells = new List<CellProxy>();
 
-            base.GetData(visitor.Root, outgoingData);
+        public IReadOnlyList<CellProxy> Cells
+        {
+            get { return this.cells; }
+        }
+
+        public void Add(INodeProxy node)
+        {
+            this.cells.Add((CellProxy)node);
+        }
+
+        public virtual void Accept(NodeVisitor visitor)
+        {
+            visitor.VisitRowStart(this);
+
+            foreach (CellProxy cell in this.cells)
+            {
+                cell.Accept(visitor);
+            }
+
+            visitor.VisitRowEnd(this);
         }
     }
 }

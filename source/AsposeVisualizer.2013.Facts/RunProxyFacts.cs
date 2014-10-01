@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerObjectSource.cs" company="Philipp Dolder">
-//   Copyright (c) 2013-2014
+// <copyright file="RunProxyFacts.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,19 +17,42 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.IO;
-    using Aspose.Words;
-    using Microsoft.VisualStudio.DebuggerVisualizers;
+    using System;
+    using FakeItEasy;
+    using FluentAssertions;
+    using Xunit;
 
-    public class AsposeVisualizerObjectSource : VisualizerObjectSource
+    public class RunProxyFacts
     {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            var root = (Node)target;
-            var visitor = new ProxyDocumentVisitor(new ProxyFactory());
-            root.Accept(visitor);
+        private const string Text = "text";
 
-            base.GetData(visitor.Root, outgoingData);
+        private readonly RunProxy testee;
+
+        public RunProxyFacts()
+        {
+            this.testee = new RunProxy(Text);
+        }
+
+        [Fact]
+        public void HasText()
+        {
+            this.testee.Text.Should().Be(Text);
+        }
+
+        [Fact]
+        public void AcceptsVisitor()
+        {
+            var visitor = A.Fake<NodeVisitor>();
+
+            this.testee.Accept(visitor);
+
+            A.CallTo(() => visitor.VisitRun(this.testee)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void IsSerializable()
+        {
+            this.testee.GetType().Should().BeDecoratedWith<SerializableAttribute>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerObjectSource.cs" company="Philipp Dolder">
-//   Copyright (c) 2013-2014
+// <copyright file="FieldStartProxy.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,19 +17,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.IO;
-    using Aspose.Words;
-    using Microsoft.VisualStudio.DebuggerVisualizers;
+    using System;
 
-    public class AsposeVisualizerObjectSource : VisualizerObjectSource
+    [Serializable]
+    public class FieldStartProxy : INodeProxy
     {
-        public override void GetData(object target, Stream outgoingData)
+        public void Accept(NodeVisitor visitor)
         {
-            var root = (Node)target;
-            var visitor = new ProxyDocumentVisitor(new ProxyFactory());
-            root.Accept(visitor);
-
-            base.GetData(visitor.Root, outgoingData);
+            visitor.VisitFieldStart(this);
         }
     }
 }

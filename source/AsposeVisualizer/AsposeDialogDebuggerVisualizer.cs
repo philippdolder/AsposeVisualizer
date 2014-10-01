@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AsposeDialogDebuggerVisualizer.cs" company="Philipp Dolder">
-//   Copyright (c) 2013
+//   Copyright (c) 2013-2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,30 +15,35 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using Aspose.Words;
+
 using AsposeVisualizer;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(
 typeof(AsposeDialogDebuggerVisualizer),
 typeof(AsposeVisualizerObjectSource),
-Target = typeof(Node),
+Target = typeof(Aspose.Words.Node),
 Description = "Aspose.Words Document Visualizer")]
 
 namespace AsposeVisualizer
 {
-    using System.IO;
     using Microsoft.VisualStudio.DebuggerVisualizers;
 
     public class AsposeDialogDebuggerVisualizer : DialogDebuggerVisualizer
     {
+        public static void TestShowVisualizer(object node)
+        {
+            var host =
+                new VisualizerDevelopmentHost(node, typeof(AsposeDialogDebuggerVisualizer), typeof(AsposeVisualizerObjectSource));
+            host.ShowVisualizer();
+        }
+
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider)
         {
-            var msg = new StreamReader(objectProvider.GetData()).ReadToEnd();
+            var nodeProxy = (INodeProxy)objectProvider.GetObject();
 
-            var form = new AsposeVisualizerForm();
-            form.SetText(msg);
+            var window = new VisualizerWindow { DataContext = new VisualizerViewModel(nodeProxy) };
 
-            windowService.ShowDialog(form);
+            window.ShowDialog();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerObjectSource.cs" company="Philipp Dolder">
-//   Copyright (c) 2013-2014
+// <copyright file="DocumentProxy.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,19 +17,34 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.IO;
-    using Aspose.Words;
-    using Microsoft.VisualStudio.DebuggerVisualizers;
+    using System;
+    using System.Collections.Generic;
 
-    public class AsposeVisualizerObjectSource : VisualizerObjectSource
+    [Serializable]
+    public class DocumentProxy : ICompositeNodeProxy
     {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            var root = (Node)target;
-            var visitor = new ProxyDocumentVisitor(new ProxyFactory());
-            root.Accept(visitor);
+        private readonly List<SectionProxy> sections = new List<SectionProxy>();
 
-            base.GetData(visitor.Root, outgoingData);
+        public IReadOnlyList<SectionProxy> Sections
+        {
+            get { return this.sections; }
+        }
+
+        public void Add(INodeProxy node)
+        {
+            this.sections.Add((SectionProxy)node);
+        }
+
+        public void Accept(NodeVisitor visitor)
+        {
+            visitor.VisitDocumentStart(this);
+
+            foreach (SectionProxy section in this.sections)
+            {
+                section.Accept(visitor);
+            }
+
+            visitor.VisitDocumentEnd(this);
         }
     }
 }

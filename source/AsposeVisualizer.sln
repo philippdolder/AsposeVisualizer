@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeVisualizer.2012", "AsposeVisualizer\AsposeVisualizer.2012.csproj", "{E4748169-C408-46A5-87FC-352247F5E10B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeVisualizer.2012", "As
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeVisualizer.2013", "AsposeVisualizer\AsposeVisualizer.2013.csproj", "{8839729A-7CBF-4B6E-A092-064D56AF585B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsposeVisualizer.2013.Facts", "AsposeVisualizer.2013.Facts\AsposeVisualizer.2013.Facts.csproj", "{FEAC91AF-48A7-454C-BB14-92DD5EE35A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{8839729A-7CBF-4B6E-A092-064D56AF585B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8839729A-7CBF-4B6E-A092-064D56AF585B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8839729A-7CBF-4B6E-A092-064D56AF585B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEAC91AF-48A7-454C-BB14-92DD5EE35A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEAC91AF-48A7-454C-BB14-92DD5EE35A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEAC91AF-48A7-454C-BB14-92DD5EE35A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEAC91AF-48A7-454C-BB14-92DD5EE35A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

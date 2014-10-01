@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerObjectSource.cs" company="Philipp Dolder">
-//   Copyright (c) 2013-2014
+// <copyright file="FieldEndProxyFacts.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,19 +17,34 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
-    using System.IO;
-    using Aspose.Words;
-    using Microsoft.VisualStudio.DebuggerVisualizers;
+    using System;
+    using FakeItEasy;
+    using FluentAssertions;
+    using Xunit;
 
-    public class AsposeVisualizerObjectSource : VisualizerObjectSource
+    public class FieldEndProxyFacts
     {
-        public override void GetData(object target, Stream outgoingData)
-        {
-            var root = (Node)target;
-            var visitor = new ProxyDocumentVisitor(new ProxyFactory());
-            root.Accept(visitor);
+        private readonly FieldEndProxy testee;
 
-            base.GetData(visitor.Root, outgoingData);
+        public FieldEndProxyFacts()
+        {
+            this.testee = new FieldEndProxy();
+        }
+
+        [Fact]
+        public void AcceptsVisitor()
+        {
+            var visitor = A.Fake<NodeVisitor>();
+
+            this.testee.Accept(visitor);
+
+            A.CallTo(() => visitor.VisitFieldEnd(this.testee)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void IsSerializable()
+        {
+            this.testee.GetType().Should().BeDecoratedWith<SerializableAttribute>();
         }
     }
 }

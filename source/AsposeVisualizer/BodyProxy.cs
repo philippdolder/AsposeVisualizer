@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AsposeVisualizerForm.cs" company="Philipp Dolder">
-//   Copyright (c) 2013
+// <copyright file="BodyProxy.cs" company="Philipp Dolder">
+//   Copyright (c) 2014
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,30 +15,36 @@
 //   limitations under the License.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Windows.Forms;
-
 namespace AsposeVisualizer
 {
-    public partial class AsposeVisualizerForm : Form
+    using System;
+    using System.Collections.Generic;
+
+    [Serializable]
+    public class BodyProxy : ICompositeNodeProxy
     {
-        public AsposeVisualizerForm()
+        private readonly List<INodeProxy> children = new List<INodeProxy>();
+
+        public IReadOnlyList<INodeProxy> Children
         {
-            InitializeComponent();
+            get { return this.children; }
         }
 
-        public void SetText(string text)
+        public void Add(INodeProxy node)
         {
-            this.textBox.Text = text;
+            this.children.Add(node);
         }
 
-        private void copyButton_Click(object sender, System.EventArgs e)
+        public virtual void Accept(NodeVisitor visitor)
         {
-            Clipboard.SetText(this.textBox.Text);
-        }
+            visitor.VisitBodyStart(this);
 
-        private void closeButton_Click(object sender, System.EventArgs e)
-        {
-            this.Close();
+            foreach (INodeProxy child in this.children)
+            {
+                child.Accept(visitor);
+            }
+
+            visitor.VisitBodyEnd(this);
         }
     }
 }
