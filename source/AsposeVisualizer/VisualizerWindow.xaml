@@ -23,12 +23,14 @@
                     Grid.Row="0"
                     Orientation="Horizontal">
             <CheckBox Name="Format" IsChecked="{Binding IncludeFormatting}">Show Formatting</CheckBox>
+            <CheckBox Name="Images" IsChecked="{Binding IncludeImages}">Show Images</CheckBox>
         </StackPanel>
         <TextBox Name="XmlRepresentation"
                  Grid.Row="1"
                  IsReadOnly="true"
                  Text="{Binding Xml,
                                 Mode=OneWay}"
+                 TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Visible" />
         <StackPanel Name="Buttons"
                     Grid.Row="2"

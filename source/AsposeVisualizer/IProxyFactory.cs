@@ -39,7 +39,7 @@ namespace AsposeVisualizer
 
         BookmarkEndProxy CreateBookmarkEnd(string bookmarkName);
 
-        DrawingMlProxy CreateDrawingMl();
+        DrawingMlProxy CreateDrawingMl(string name);
 
         FieldStartProxy CreateFieldStart();
 

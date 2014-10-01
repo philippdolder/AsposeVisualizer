@@ -37,6 +37,8 @@ namespace AsposeVisualizer
 
         public string Name { get; private set; }
 
+        public string Image { get; set; }
+
         public void Accept(NodeVisitor visitor)
         {
             visitor.VisitShapeStart(this);

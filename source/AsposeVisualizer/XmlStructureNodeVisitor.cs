@@ -17,6 +17,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AsposeVisualizer
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -142,7 +143,7 @@ namespace AsposeVisualizer
                     .AppendFormat(
                         "<Run {0}>{1}</Run>",
                         FormatAttributes(
-                            new NamedValue("Language", CultureInfo.GetCultureInfo(run.Format.Language).Name),
+                            new NamedValue("Language", run.Format.Language.ToString(CultureInfo.InvariantCulture)),
                             new NamedValue("StyleIdentifier", run.Format.StyleIdentifier),
                             new NamedValue("StyleName", run.Format.StyleName),
                             new NamedValue("Font", run.Format.Font), 
@@ -195,8 +196,18 @@ namespace AsposeVisualizer
 
         public override void VisitShapeStart(ShapeProxy shape)
         {
-            this.builder.AppendFormat("<Shape {0}>", FormatAttributes(new NamedValue("Name", shape.Name)))
-                .AppendLine();
+            this.builder.AppendFormat("<Shape {0}>", FormatAttributes(new NamedValue("Name", shape.Name)));
+
+            if (this.displayOptions.IncludeImages)
+            {
+                this.builder
+                    .AppendLine()
+                    .AppendFormat("<Image>{0}</Image>", shape.Image);
+            }
+            else
+            {
+                this.builder.AppendLine();
+            }
         }
 
         public override void VisitShapeEnd(ShapeProxy shape)
@@ -236,7 +247,21 @@ namespace AsposeVisualizer
 
         public override void VisitDrawingMl(DrawingMlProxy drawingMl)
         {
-            this.builder.AppendLine("<DrawingMl />");
+
+            if (this.displayOptions.IncludeImages)
+            {
+                this.builder.AppendFormat("<DrawingMl {0}>", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
+                    .AppendLine()
+                    .AppendFormat("<Image>{0}{1}{0}</Image>", Environment.NewLine, drawingMl.Image)
+                    .AppendLine()
+                    .AppendLine("</DrawingMl>");
+            }
+            else
+            {
+                this.builder
+                    .AppendFormat("<DrawingMl {0} />", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
+                    .AppendLine();
+            }
         }
 
         public override void VisitFieldStart(FieldStartProxy fieldStart)

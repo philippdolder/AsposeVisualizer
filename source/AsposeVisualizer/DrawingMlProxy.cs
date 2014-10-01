@@ -22,6 +22,15 @@ namespace AsposeVisualizer
     [Serializable]
     public class DrawingMlProxy : INodeProxy
     {
+        public DrawingMlProxy(string name)
+        {
+            this.Name = name;
+        }
+
+        public string Name { get; private set; }
+
+        public string Image { get; set; }
+
         public void Accept(NodeVisitor visitor)
         {
             visitor.VisitDrawingMl(this);

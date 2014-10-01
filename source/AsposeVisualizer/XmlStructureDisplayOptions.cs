@@ -19,11 +19,14 @@ namespace AsposeVisualizer
 {
     public class XmlStructureDisplayOptions
     {
-        public XmlStructureDisplayOptions(bool includeFormatting)
+        public XmlStructureDisplayOptions(bool includeFormatting, bool includeImages)
         {
+            this.IncludeImages = includeImages;
             this.IncludeFormatting = includeFormatting;
         }
 
         public bool IncludeFormatting { get; private set; }
+
+        public bool IncludeImages { get; private set; }
     }
 }

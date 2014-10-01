@@ -25,6 +25,7 @@ namespace AsposeVisualizer
     {
         private readonly INodeProxy documentProxy;
         private bool includeFormatting;
+        private bool includeImages;
 
         public VisualizerViewModel(INodeProxy documentProxy)
         {
@@ -59,6 +60,21 @@ namespace AsposeVisualizer
             }
         }
 
+        public bool IncludeImages
+        {
+            get
+            {
+                return this.includeImages;
+            }
+
+            set
+            {
+                this.includeImages = value;
+                this.PropertyChanged(this, new PropertyChangedEventArgs("IncludeImages"));
+                this.PropertyChanged(this, new PropertyChangedEventArgs("Xml"));
+            }
+        }
+
         private void CopyToClipboard()
         {
             Clipboard.SetText(this.Xml);
@@ -66,7 +82,7 @@ namespace AsposeVisualizer
 
         private string CreateXml()
         {
-            var visitor = new XmlStructureNodeVisitor(new XmlStructureDisplayOptions(this.IncludeFormatting));
+            var visitor = new XmlStructureNodeVisitor(new XmlStructureDisplayOptions(this.IncludeFormatting, this.IncludeImages));
             this.documentProxy.Accept(visitor);
 
             return visitor.AsXml;

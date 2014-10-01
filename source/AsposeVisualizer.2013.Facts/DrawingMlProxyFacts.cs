@@ -24,11 +24,18 @@ namespace AsposeVisualizer
 
     public class DrawingMlProxyFacts
     {
+        private const string Name = "Name";
         private readonly DrawingMlProxy testee;
 
         public DrawingMlProxyFacts()
         {
-            this.testee = new DrawingMlProxy();
+            this.testee = new DrawingMlProxy(Name);
+        }
+
+        [Fact]
+        public void HasName()
+        {
+            this.testee.Name.Should().Be(Name);
         }
 
         [Fact]

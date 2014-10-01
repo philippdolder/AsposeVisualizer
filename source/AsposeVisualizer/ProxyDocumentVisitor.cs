@@ -249,7 +249,12 @@ namespace AsposeVisualizer
 
         public override VisitorAction VisitDrawingML(DrawingML drawingMl)
         {
-            DrawingMlProxy drawingMlProxy = this.proxyFactory.CreateDrawingMl();
+            DrawingMlProxy drawingMlProxy = this.proxyFactory.CreateDrawingMl(drawingMl.Name);
+
+            if (drawingMl.HasImage)
+            {
+                drawingMlProxy.Image = Convert.ToBase64String(drawingMl.ImageData.ImageBytes);
+            }
 
             this.AddLeafToHierarchy(drawingMlProxy);
 
@@ -286,6 +291,11 @@ namespace AsposeVisualizer
         public override VisitorAction VisitShapeStart(Shape shape)
         {
             ShapeProxy shapeProxy = this.proxyFactory.CreateShape(shape.Name);
+
+            if (shape.HasImage)
+            {
+                shapeProxy.Image = Convert.ToBase64String(shape.ImageData.ImageBytes);
+            }
 
             this.AddToHierarchy(shapeProxy);
 

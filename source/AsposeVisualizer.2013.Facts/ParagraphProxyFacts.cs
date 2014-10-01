@@ -76,7 +76,7 @@ namespace AsposeVisualizer
         [Fact]
         public void ChildCanBeDrawingMl()
         {
-            var drawingMl = new DrawingMlProxy();
+            var drawingMl = new DrawingMlProxy("name");
 
             this.testee.Add(drawingMl);
 

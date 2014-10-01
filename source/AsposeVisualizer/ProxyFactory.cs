@@ -69,9 +69,9 @@ namespace AsposeVisualizer
             return new BookmarkEndProxy(bookmarkName);
         }
 
-        public DrawingMlProxy CreateDrawingMl()
+        public DrawingMlProxy CreateDrawingMl(string name)
         {
-            return new DrawingMlProxy();
+            return new DrawingMlProxy(name);
         }
 
         public FieldStartProxy CreateFieldStart()
