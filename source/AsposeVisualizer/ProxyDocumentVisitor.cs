@@ -247,7 +247,7 @@ namespace AsposeVisualizer
             return VisitorAction.Continue;
         }
 
-        public override VisitorAction VisitDrawingML(DrawingML drawingMl)
+        public override VisitorAction VisitDrawingMLStart(DrawingML drawingMl)
         {
             DrawingMlProxy drawingMlProxy = this.proxyFactory.CreateDrawingMl(drawingMl.Name);
 
@@ -256,7 +256,16 @@ namespace AsposeVisualizer
                 drawingMlProxy.Image = Convert.ToBase64String(drawingMl.ImageData.ImageBytes);
             }
 
-            this.AddLeafToHierarchy(drawingMlProxy);
+            this.AddToHierarchy(drawingMlProxy);
+
+            return VisitorAction.Continue;
+        }
+
+        public override VisitorAction VisitDrawingMLEnd(DrawingML drawingMl)
+        {
+            ICompositeNodeProxy drawingMlProxy = this.traversingParents.Pop();
+
+            ProxyDocumentVisitor.EnsureLegalTreeTraversal<DrawingMlProxy>(drawingMlProxy);
 
             return VisitorAction.Continue;
         }

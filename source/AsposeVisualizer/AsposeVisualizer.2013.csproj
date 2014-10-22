@@ -36,13 +36,13 @@
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=14.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+    <Reference Include="Aspose.Words, Version=14.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Aspose.Words.14.8.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
+      <HintPath>..\packages\Aspose.Words.14.9.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="AsposeWordsSupport, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AsposeWordsSupport, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AsposeWordsSupport.1.8.0\lib\net45\AsposeWordsSupport.dll</HintPath>
+      <HintPath>..\packages\AsposeWordsSupport.1.10.0\lib\net45\AsposeWordsSupport.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

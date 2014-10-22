@@ -39,13 +39,58 @@ namespace AsposeVisualizer
         }
 
         [Fact]
-        public void AcceptsVisitor()
+        public void HasChildrenInAddedOrder()
         {
+            var firstChild = A.Fake<INodeProxy>();
+            var secondChild = A.Fake<INodeProxy>();
+
+            this.testee.Add(firstChild);
+            this.testee.Add(secondChild);
+
+            this.testee.Children.Should().ContainInOrder(firstChild, secondChild);
+        }
+
+        [Fact]
+        public void SendsVisitorToChildrenInOrder()
+        {
+            var firstChild = A.Fake<INodeProxy>();
+            var secondChild = A.Fake<INodeProxy>();
+
+            this.testee.Add(firstChild);
+            this.testee.Add(secondChild);
+
             var visitor = A.Fake<NodeVisitor>();
+            using (var scope = Fake.CreateScope())
+            {
+                this.testee.Accept(visitor);
 
-            this.testee.Accept(visitor);
+                using (scope.OrderedAssertions())
+                {
+                    A.CallTo(() => firstChild.Accept(visitor)).MustHaveHappened();
+                    A.CallTo(() => secondChild.Accept(visitor)).MustHaveHappened();
+                }
+            }
+        }
 
-            A.CallTo(() => visitor.VisitDrawingMl(this.testee)).MustHaveHappened();
+        [Fact]
+        public void VisitsChildrenBetweenShapeStartAndEnd()
+        {
+            var child = A.Fake<INodeProxy>();
+
+            this.testee.Add(child);
+
+            var visitor = A.Fake<NodeVisitor>();
+            using (var scope = Fake.CreateScope())
+            {
+                this.testee.Accept(visitor);
+
+                using (scope.OrderedAssertions())
+                {
+                    A.CallTo(() => visitor.VisitDrawingMlStart(this.testee)).MustHaveHappened();
+                    A.CallTo(() => child.Accept(visitor)).MustHaveHappened();
+                    A.CallTo(() => visitor.VisitDrawingMlEnd(this.testee)).MustHaveHappened();
+                }
+            }
         }
 
         [Fact]
