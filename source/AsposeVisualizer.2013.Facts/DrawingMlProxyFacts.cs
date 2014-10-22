@@ -73,7 +73,7 @@ namespace AsposeVisualizer
         }
 
         [Fact]
-        public void VisitsChildrenBetweenShapeStartAndEnd()
+        public void VisitsChildrenBetweenDrawingMlStartAndEnd()
         {
             var child = A.Fake<INodeProxy>();
 
