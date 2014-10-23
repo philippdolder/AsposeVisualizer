@@ -18,13 +18,21 @@
 namespace AsposeVisualizer
 {
     using System;
+    using System.Collections.Generic;
 
     [Serializable]
-    public class DrawingMlProxy : INodeProxy
+    public class DrawingMlProxy : ICompositeNodeProxy
     {
+        private readonly List<INodeProxy> children = new List<INodeProxy>();
+
         public DrawingMlProxy(string name)
         {
             this.Name = name;
+        }
+
+        public IReadOnlyList<INodeProxy> Children
+        {
+            get { return this.children; }
         }
 
         public string Name { get; private set; }
@@ -33,7 +41,19 @@ namespace AsposeVisualizer
 
         public void Accept(NodeVisitor visitor)
         {
-            visitor.VisitDrawingMl(this);
+            visitor.VisitDrawingMlStart(this);
+
+            foreach (INodeProxy child in this.children)
+            {
+                child.Accept(visitor);
+            }
+
+            visitor.VisitDrawingMlEnd(this);
+        }
+
+        public void Add(INodeProxy node)
+        {
+            this.children.Add(node);
         }
     }
 }

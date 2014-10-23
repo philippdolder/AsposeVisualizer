@@ -87,7 +87,11 @@ namespace AsposeVisualizer
         {
         }
 
-        public virtual void VisitDrawingMl(DrawingMlProxy drawingMl)
+        public virtual void VisitDrawingMlStart(DrawingMlProxy drawingMl)
+        {
+        }
+
+        public virtual void VisitDrawingMlEnd(DrawingMlProxy drawingMl)
         {
         }
 

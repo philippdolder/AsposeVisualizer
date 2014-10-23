@@ -196,17 +196,14 @@ namespace AsposeVisualizer
 
         public override void VisitShapeStart(ShapeProxy shape)
         {
-            this.builder.AppendFormat("<Shape {0}>", FormatAttributes(new NamedValue("Name", shape.Name)));
+            this.builder
+                    .AppendFormat("<Shape {0}>", FormatAttributes(new NamedValue("Name", shape.Name)))
+                    .AppendLine();
 
             if (this.displayOptions.IncludeImages)
             {
                 this.builder
-                    .AppendLine()
                     .AppendFormat("<Image>{0}</Image>", shape.Image);
-            }
-            else
-            {
-                this.builder.AppendLine();
             }
         }
 
@@ -245,22 +242,22 @@ namespace AsposeVisualizer
             this.builder.AppendLine("</Cell>");
         }
 
-        public override void VisitDrawingMl(DrawingMlProxy drawingMl)
+        public override void VisitDrawingMlStart(DrawingMlProxy drawingMl)
         {
+            this.builder
+                .AppendFormat("<DrawingMl {0}>", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
+                .AppendLine();
+
             if (this.displayOptions.IncludeImages)
             {
-                this.builder.AppendFormat("<DrawingMl {0}>", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
-                    .AppendLine()
-                    .AppendFormat("<Image>{0}{1}{0}</Image>", Environment.NewLine, drawingMl.Image)
-                    .AppendLine()
-                    .AppendLine("</DrawingMl>");
-            }
-            else
-            {
                 this.builder
-                    .AppendFormat("<DrawingMl {0} />", FormatAttributes(new NamedValue("Name", drawingMl.Name)))
-                    .AppendLine();
+                    .AppendFormat("<Image>{0}{1}{0}</Image>", Environment.NewLine, drawingMl.Image);
             }
+        }
+
+        public override void VisitDrawingMlEnd(DrawingMlProxy drawingMl)
+        {
+            this.builder.AppendLine("</DrawingMl>");
         }
 
         public override void VisitFieldStart(FieldStartProxy fieldStart)
