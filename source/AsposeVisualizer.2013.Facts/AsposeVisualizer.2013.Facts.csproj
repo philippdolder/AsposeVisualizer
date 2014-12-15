@@ -34,8 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Words">
-      <HintPath>..\packages\Aspose.Words.14.10.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Aspose.Words.14.11.0\lib\net3.5-client\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy">
       <HintPath>..\packages\FakeItEasy.1.24.0\lib\net40\FakeItEasy.dll</HintPath>
